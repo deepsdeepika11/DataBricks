@@ -2,7 +2,7 @@ name: Deploy Notebooks to Databricks
 
 on:
   push:
-    branches: [ main ]   # Trigger on pushes to main branch
+    branches: [ main ]
 
 jobs:
   deploy:
@@ -17,9 +17,9 @@ jobs:
 
       - name: Configure Databricks CLI
         run: |
-          databricks configure --token --host ${{ secrets.https://dbc-77a31924-3e78.cloud.databricks.com }}
+          databricks configure --token --host ${{ secrets.DATABRICKS_HOST }}
         env:
-          DATABRICKS_TOKEN: ${{ secrets.dapi046ab70b950c98993ab4bb9bbe5393f5 }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
 
       - name: Deploy notebooks to workspace
         run: databricks workspace import_dir ./notebooks /Shared/notebooks -o
