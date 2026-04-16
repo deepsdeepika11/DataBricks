@@ -1,45 +1,25 @@
-name: Databricks Deploy
+name: Deploy Notebooks to Databricks
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    branches: [ main ]   # Trigger on pushes to main branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-      
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install databricks-cli
-      
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Databricks CLI
+        run: pip install databricks-cli
+
       - name: Configure Databricks CLI
         run: |
-          databricks configure --token
+          databricks configure --token --host ${{ secrets.DATABRICKS_HOST }}
         env:
-          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-      
-      - name: Deploy notebooks
-        run: |
-          # Add your deployment commands here
-          echo "Deploying notebooks to Databricks..."
-          # Example: databricks workspace import_dir ./notebooks /Users/user/notebooks --overwrite
-      
-      - name: Run tests
-        run: |
-          # Add your test commands here
-          echo "Running tests..."
+
+      - name: Deploy notebooks to workspace
+        run: databricks workspace import_dir ./notebooks /Shared/notebooks -o
