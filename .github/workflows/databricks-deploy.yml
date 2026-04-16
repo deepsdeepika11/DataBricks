@@ -17,9 +17,9 @@ jobs:
 
       - name: Configure Databricks CLI
         run: |
-          databricks configure --token --host ${{ secrets.DATABRICKS_HOST }}
+          databricks configure --token --host ${{ secrets.https://dbc-77a31924-3e78.cloud.databricks.com }}
         env:
-          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+          DATABRICKS_TOKEN: ${{ secrets.dapi046ab70b950c98993ab4bb9bbe5393f5 }}
 
       - name: Deploy notebooks to workspace
         run: databricks workspace import_dir ./notebooks /Shared/notebooks -o
